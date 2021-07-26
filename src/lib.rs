@@ -96,6 +96,13 @@ This crate provides one cargo feature:
 
 #![doc(html_root_url = "https://docs.rs/lazy_static/1.4.0")]
 #![no_std]
+#![cfg_attr(all(feature = "mesalock_sgx", not(target_env = "sgx")), no_std)]
+#![cfg_attr(all(target_env = "sgx", target_vendor = "mesalock"), feature(rustc_private))]
+
+#[cfg(all(feature = "mesalock_sgx", not(target_env = "sgx")))]
+#[macro_use]
+extern crate sgx_tstd as std;
+use std::prelude::v1::*;
 
 #[cfg(not(feature = "spin_no_std"))]
 #[path = "inline_lazy.rs"]
